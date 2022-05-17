@@ -11,10 +11,6 @@ class MainViewModel @Inject constructor(
 ) : ViewModel() {
 
     val supportedCurrencies = currencyConverterRepository.getSupportedCurrencies()
+    val conversionRates = currencyConverterRepository.getCurrencyRate("BDT", 100.00)
 
-    override fun onCleared() {
-        super.onCleared()
-
-        currencyConverterRepository.clearScope()
-    }
 }
