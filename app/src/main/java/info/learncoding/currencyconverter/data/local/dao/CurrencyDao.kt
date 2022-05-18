@@ -21,7 +21,7 @@ interface CurrencyDao {
     @Query("DELETE FROM Currency")
     suspend fun deleteAll()
 
-    @Query("SELECT * FROM Currency ORDER BY createdAt LIMIT 1")
+    @Query("SELECT * FROM Currency ORDER BY createdAt DESC LIMIT 1")
     suspend fun getLast(): List<Currency>
 
 }
