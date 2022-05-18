@@ -1,7 +1,11 @@
 package info.learncoding.currencyconverter.ui.home
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import info.learncoding.currencyconverter.data.model.ConversionRate
+import info.learncoding.currencyconverter.data.network.DataState
 import info.learncoding.currencyconverter.data.repository.CurrencyConverterRepository
 import javax.inject.Inject
 
@@ -11,6 +15,16 @@ class MainViewModel @Inject constructor(
 ) : ViewModel() {
 
     val supportedCurrencies = currencyConverterRepository.getSupportedCurrencies()
-    val conversionRates = currencyConverterRepository.getCurrencyRate("BDT", 100.00)
+
+    private val _currencyConversions: MediatorLiveData<DataState<List<ConversionRate>>> =
+        MediatorLiveData()
+    val conversions: LiveData<DataState<List<ConversionRate>>> = _currencyConversions
+
+    fun convert(source: String, amount: Double) {
+        val conversionsLiveData = currencyConverterRepository.getCurrencyRate(source, amount)
+        _currencyConversions.addSource(conversionsLiveData) {
+            _currencyConversions.postValue(it)
+        }
+    }
 
 }
