@@ -7,7 +7,7 @@
 
         <variable
             name="currency"
-            type="info.learncoding.currencyconverter.data.model.ConversionRate" />
+            type="info.learncoding.currencyconverter.data.model.Conversion" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:padding="8dp"
-            android:text="@{String.format(`%.2f`,currency.rate)}"
+            android:text="@{String.format(`%.2f`,currency.amount)}"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

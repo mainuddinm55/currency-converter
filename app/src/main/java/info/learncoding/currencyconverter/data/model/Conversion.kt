@@ -9,7 +9,7 @@ import java.util.*
 
 @Entity
 @TypeConverters(DateConverter::class)
-data class ConversionRate(
+data class Conversion(
     @PrimaryKey(autoGenerate = true)
     @SerializedName("id")
     val id: Int = 0,
@@ -18,7 +18,7 @@ data class ConversionRate(
     @SerializedName("currency")
     val currency: String,
     @SerializedName("rate")
-    val rate: Double,
+    val amount: Double,
     @SerializedName("createdAt")
     val createdAt: Date = Date(System.currentTimeMillis())
 )

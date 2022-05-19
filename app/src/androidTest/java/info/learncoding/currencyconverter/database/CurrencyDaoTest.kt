@@ -1,4 +1,4 @@
-package info.learncoding.currencyconverter
+package info.learncoding.currencyconverter.database
 
 import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
@@ -9,6 +9,7 @@ import com.google.common.truth.Truth.assertThat
 import info.learncoding.currencyconverter.data.local.AppDatabase
 import info.learncoding.currencyconverter.data.local.dao.CurrencyDao
 import info.learncoding.currencyconverter.data.model.Currency
+import info.learncoding.currencyconverter.getOrAwaitValue
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import org.junit.After
@@ -72,11 +73,39 @@ class CurrencyDaoTest {
         runBlocking(Dispatchers.Main) {
             val currencies = mutableListOf<Currency>()
             for (i in 1..10) {
-                currencies.add(Currency(i, currency = "BDT", country = "Bangladesh", Date(System.currentTimeMillis()+i)))
+                currencies.add(
+                    Currency(
+                        i,
+                        currency = "BDT",
+                        country = "Bangladesh",
+                        Date(System.currentTimeMillis() + i)
+                    )
+                )
             }
             currencyDao.insert(currencies)
             val insertedCurrencies = currencyDao.getLast()
             assertThat(insertedCurrencies.first() == currencies.last()).isTrue()
+        }
+    }
+
+    @Test
+    fun test_delete_all_currencies() {
+        runBlocking(Dispatchers.Main) {
+            val currencies = mutableListOf<Currency>()
+            for (i in 1..10) {
+                currencies.add(
+                    Currency(
+                        i,
+                        currency = "BDT",
+                        country = "Bangladesh",
+                        Date(System.currentTimeMillis() + i)
+                    )
+                )
+            }
+            currencyDao.insert(currencies)
+            currencyDao.deleteAll()
+            val currenciesFromDb = currencyDao.getAll().getOrAwaitValue()
+            assertThat(currenciesFromDb.isEmpty()).isTrue()
         }
     }
 }

@@ -3,7 +3,7 @@ package info.learncoding.currencyconverter.data.repository
 import androidx.lifecycle.LiveData
 import info.learncoding.currencyconverter.data.local.AppDatabase
 import info.learncoding.currencyconverter.data.model.ApiError
-import info.learncoding.currencyconverter.data.model.ConversionRate
+import info.learncoding.currencyconverter.data.model.Conversion
 import info.learncoding.currencyconverter.data.model.Currency
 import info.learncoding.currencyconverter.data.model.ErrorType
 import info.learncoding.currencyconverter.data.network.ApiClient
@@ -61,27 +61,27 @@ class CurrencyConverterRepositoryImp(
     override fun getCurrencyRate(
         source: String,
         amount: Double
-    ): LiveData<DataState<List<ConversionRate>>> {
-        return object : NetworkResourceBounce<List<ConversionRate>>() {
-            override suspend fun query(): List<ConversionRate> {
-                return database.conversionRateDao().getLast()
+    ): LiveData<DataState<List<Conversion>>> {
+        return object : NetworkResourceBounce<List<Conversion>>() {
+            override suspend fun query(): List<Conversion> {
+                return database.conversionDao().getLast()
             }
 
-            override fun queryObservable(): LiveData<List<ConversionRate>> {
-                return database.conversionRateDao().convertCurrency(source, amount)
+            override fun queryObservable(): LiveData<List<Conversion>> {
+                return database.conversionDao().convertCurrency(source, amount)
             }
 
-            override suspend fun fetch(): ApiResponse<List<ConversionRate>> {
+            override suspend fun fetch(): ApiResponse<List<Conversion>> {
                 return when (val response = safeApiCall { apiClient.getConversionRate() }) {
                     is ApiResponse.Error -> response
                     is ApiResponse.Success -> {
                         if (response.data.success) {
                             val rates = response.data.quotes.map {
                                 val currency = it.key.removePrefix("USD")
-                                ConversionRate(
+                                Conversion(
                                     source = response.data.source,
                                     currency = currency,
-                                    rate = it.value
+                                    amount = it.value
                                 )
                             }
                             ApiResponse.Success(rates)
@@ -92,12 +92,12 @@ class CurrencyConverterRepositoryImp(
                 }
             }
 
-            override suspend fun saveFetchResult(data: List<ConversionRate>) {
-                database.conversionRateDao().deleteAll()
-                database.conversionRateDao().insert(data)
+            override suspend fun saveFetchResult(data: List<Conversion>) {
+                database.conversionDao().deleteAll()
+                database.conversionDao().insert(data)
             }
 
-            override fun shouldFetch(data: List<ConversionRate>?): Boolean {
+            override fun shouldFetch(data: List<Conversion>?): Boolean {
                 return data.isNullOrEmpty() || needToFetchData(data.first().createdAt)
             }
 

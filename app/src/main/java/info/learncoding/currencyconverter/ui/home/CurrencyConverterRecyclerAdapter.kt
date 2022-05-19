@@ -3,13 +3,13 @@ package info.learncoding.currencyconverter.ui.home
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
-import info.learncoding.currencyconverter.data.model.ConversionRate
+import info.learncoding.currencyconverter.data.model.Conversion
 import info.learncoding.currencyconverter.databinding.RowItemCurrencyResultBinding
 import info.learncoding.currencyconverter.ui.base.BaseRecyclerAdapter
 import javax.inject.Inject
 
 class CurrencyConverterRecyclerAdapter @Inject constructor(
-) : BaseRecyclerAdapter<ConversionRate, RowItemCurrencyResultBinding>() {
+) : BaseRecyclerAdapter<Conversion, RowItemCurrencyResultBinding>() {
 
     override fun initializeViewBinding(
         layoutInflater: LayoutInflater,
@@ -19,18 +19,18 @@ class CurrencyConverterRecyclerAdapter @Inject constructor(
         return RowItemCurrencyResultBinding.inflate(layoutInflater, parent, false)
     }
 
-    override fun initializeDiffItemCallback(): DiffUtil.ItemCallback<ConversionRate> {
-        return object : DiffUtil.ItemCallback<ConversionRate>() {
+    override fun initializeDiffItemCallback(): DiffUtil.ItemCallback<Conversion> {
+        return object : DiffUtil.ItemCallback<Conversion>() {
             override fun areItemsTheSame(
-                oldItem: ConversionRate,
-                newItem: ConversionRate
+                oldItem: Conversion,
+                newItem: Conversion
             ): Boolean {
                 return oldItem.id == newItem.id
             }
 
             override fun areContentsTheSame(
-                oldItem: ConversionRate,
-                newItem: ConversionRate
+                oldItem: Conversion,
+                newItem: Conversion
             ): Boolean {
                 return oldItem == newItem
             }
