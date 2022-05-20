@@ -21,7 +21,7 @@ class MainViewModel @Inject constructor(
     val conversions: LiveData<DataState<List<Conversion>>> = _currencyConversions
 
     fun convert(source: String, amount: Double) {
-        val conversionsLiveData = currencyConverterRepository.getCurrencyRate(source, amount)
+        val conversionsLiveData = currencyConverterRepository.convertCurrency(source, amount)
         _currencyConversions.addSource(conversionsLiveData) {
             _currencyConversions.postValue(it)
         }

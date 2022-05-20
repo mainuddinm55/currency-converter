@@ -8,6 +8,7 @@ import info.learncoding.currencyconverter.BuildConfig
 import info.learncoding.currencyconverter.CurrencyConversionApp
 import info.learncoding.currencyconverter.data.network.ApiClient
 import info.learncoding.currencyconverter.data.network.NetworkInterceptor
+import info.learncoding.currencyconverter.utils.AppConstraint
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -20,16 +21,10 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
-    @Singleton
-    @Provides
-    @Named("base_url")
-    fun provideBaseUrl(): String {
-        return "https://api.apilayer.com/currency_data/"
-    }
 
     @Singleton
     @Provides
-    fun provideNetworkInterceptor( app: CurrencyConversionApp): NetworkInterceptor {
+    fun provideNetworkInterceptor(app: CurrencyConversionApp): NetworkInterceptor {
         return NetworkInterceptor(app)
     }
 
@@ -61,11 +56,10 @@ object NetworkModule {
     @Singleton
     @Provides
     fun provideRetrofitClient(
-        @Named("base_url") baseUrl: String,
         client: OkHttpClient
     ): ApiClient {
         return Retrofit.Builder()
-            .baseUrl(baseUrl)
+            .baseUrl(AppConstraint.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .client(client)
             .build()

@@ -3,6 +3,7 @@
 *.aar
 *.ap_
 *.aab
+!/blob/currency_converter.apk
 
 # Files for the ART/Dalvik VM
 *.dex

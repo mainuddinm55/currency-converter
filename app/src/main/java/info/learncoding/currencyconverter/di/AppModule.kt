@@ -9,6 +9,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import info.learncoding.currencyconverter.CurrencyConversionApp
 import info.learncoding.currencyconverter.data.local.AppDatabase
+import info.learncoding.currencyconverter.utils.AppConstraint
 import javax.inject.Singleton
 
 
@@ -25,7 +26,7 @@ object AppModule {
     @Provides
     @Singleton
     fun provideAppDatabase(app: CurrencyConversionApp):AppDatabase{
-        return Room.databaseBuilder(app,AppDatabase::class.java,AppDatabase.DATABASE_NAME)
+        return Room.databaseBuilder(app,AppDatabase::class.java,AppConstraint.DATABASE_NAME)
             .addMigrations(*AppDatabase.migrations)
             .build()
     }

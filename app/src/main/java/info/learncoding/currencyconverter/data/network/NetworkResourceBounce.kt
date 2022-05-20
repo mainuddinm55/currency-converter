@@ -5,6 +5,10 @@ import androidx.lifecycle.liveData
 import androidx.lifecycle.map
 import info.learncoding.currencyconverter.data.network.response.ApiResponse
 
+/**
+ * [NetworkResourceBounce] abstract class that responsible for fetch data from network or local
+ * [T] type of result that you expecting
+ */
 abstract class NetworkResourceBounce<T> {
 
     fun asLiveData() = liveData<DataState<T>> {
@@ -27,9 +31,29 @@ abstract class NetworkResourceBounce<T> {
         }
     }
 
+    /**
+     * This query return a response from database that need to check is there any data contain or not
+     * If not then fetch api call
+     * If contain then check need to refresh or not with max cache time in minute
+     */
     abstract suspend fun query(): T
+
+    /**
+     * Return livedata from local database of expecting data
+     */
     abstract fun queryObservable(): LiveData<T>
+
+    /**
+     * Call api to fetch data from network
+     */
     abstract suspend fun fetch(): ApiResponse<T>
+
+    /**
+     * Saved data into local db which fetched from network
+     */
     abstract suspend fun saveFetchResult(data: T)
+    /**
+     * check need to data refresh or not
+     */
     abstract fun shouldFetch(data: T?): Boolean
 }

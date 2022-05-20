@@ -9,6 +9,6 @@ interface CurrencyConverterRepository {
 
     fun getSupportedCurrencies(): LiveData<DataState<List<Currency>>>
 
-    fun getCurrencyRate(source: String,amount:Double): LiveData<DataState<List<Conversion>>>
+    fun convertCurrency(source: String, amount:Double): LiveData<DataState<List<Conversion>>>
 
 }

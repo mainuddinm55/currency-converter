@@ -5,6 +5,7 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
+import info.learncoding.currencyconverter.BuildConfig
 import info.learncoding.currencyconverter.R
 import okhttp3.Interceptor
 import okhttp3.Response
@@ -19,7 +20,7 @@ class NetworkInterceptor(private val app: Application) : Interceptor {
     override fun intercept(@NotNull chain: Interceptor.Chain): Response {
         return if (isNetworkAvailable()) {
             val request = chain.request().newBuilder()
-                .addHeader("apikey", "8cz8fcVsX94orgNbhbp4nLEnqYM2n87W")
+                .addHeader("apikey", BuildConfig.API_KEY)
                 .build()
             chain.proceed(request)
         } else {

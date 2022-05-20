@@ -11,6 +11,7 @@ import info.learncoding.currencyconverter.data.network.BaseRepositoryImp
 import info.learncoding.currencyconverter.data.network.DataState
 import info.learncoding.currencyconverter.data.network.NetworkResourceBounce
 import info.learncoding.currencyconverter.data.network.response.ApiResponse
+import info.learncoding.currencyconverter.utils.AppConstraint
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -19,6 +20,11 @@ class CurrencyConverterRepositoryImp(
     private val database: AppDatabase
 ) : BaseRepositoryImp(), CurrencyConverterRepository {
 
+    /**
+     * Get supported currencies
+     * If available on local and not extend max refresh than return from local
+     * Otherwise fetch from network
+     */
     override fun getSupportedCurrencies(): LiveData<DataState<List<Currency>>> {
         return object : NetworkResourceBounce<List<Currency>>() {
 
@@ -58,7 +64,12 @@ class CurrencyConverterRepositoryImp(
 
     }
 
-    override fun getCurrencyRate(
+    /**
+     * Convert given amount from source currency to all other currency
+     * @param source currency convert will be based on this currency
+     * @param amount how many amount will convert
+     */
+    override fun convertCurrency(
         source: String,
         amount: Double
     ): LiveData<DataState<List<Conversion>>> {
@@ -106,7 +117,7 @@ class CurrencyConverterRepositoryImp(
 
     private fun needToFetchData(lastFetchTime: Date): Boolean {
         val diff = Date().time - lastFetchTime.time
-        return TimeUnit.MILLISECONDS.toMinutes(diff) >= 30
+        return TimeUnit.MILLISECONDS.toMinutes(diff) >= AppConstraint.MAX_CACHED_TIME
     }
 
 }

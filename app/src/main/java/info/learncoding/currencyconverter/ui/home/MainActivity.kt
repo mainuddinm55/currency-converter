@@ -16,6 +16,7 @@ import info.learncoding.currencyconverter.databinding.ActivityMainBinding
 import info.learncoding.currencyconverter.utils.gone
 import info.learncoding.currencyconverter.utils.show
 import info.learncoding.currencyconverter.utils.showToast
+import java.util.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -119,4 +120,5 @@ class MainActivity : AppCompatActivity() {
             adapter = this@MainActivity.adapter
         }
     }
+
 }
