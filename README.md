@@ -26,7 +26,7 @@ API_KEY="XXXXXXXXXXXXXXXXXXXXXXXX"
 ``
 
 # Preview
-![](/blob/currency_converter.gif)
+<img src="/blob/currency_converter.gif" width="380" height="720"/>
 
 # Note
 Download the [apk](/blob/currency_converter.apk) and have a look onto
