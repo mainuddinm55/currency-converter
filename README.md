@@ -1,4 +1,4 @@
-# currency-converter
+# Currency Converter
 Currency converter app is a simple app that convert your currency to all others currencies. 
 
 # Conversion Service
